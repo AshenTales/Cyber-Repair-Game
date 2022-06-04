@@ -11,27 +11,37 @@ using UnityEngine;
 public class DayNightController : MonoBehaviour
 {
     // init vars
-    [SerializeField] int dayCustomersMax = 5;
-    [SerializeField] int dayCustomerMin = 3;
-    [SerializeField] int nightCustomerMax = 2;
-    [SerializeField] int nightCustomerMin = 1;
+    [SerializeField] private int[] dayCustomerMinMax = {3,5};
+    [SerializeField] private int[] nightCustomerMinMax = {1,2};
+    [SerializeField] private float timePerDay = 8f; // Time per day in hours
+    [SerializeField] private float timePerHour = 60f; // Time in seconds per game hour
 
-    [SerializeField]int dayCustomers = 0; //serialized for easy debug
-    [SerializeField]int nightCustomers = 0; //serialized for easy debug
+    public int currentDayCustomers = 0; 
+    public int currentNightCustomers = 0;
+    public float currentTime = 0f;
 
     void Start()
     {
-        GenerateCustomerCounts(dayCustomerMin, dayCustomersMax, nightCustomerMin, nightCustomerMax);
+        GenerateCustomerCounts(dayCustomerMinMax[0], dayCustomerMinMax[1], nightCustomerMinMax[0], nightCustomerMinMax[1]);
     }
 
     void Update()
     {
-        
+        KeepTime();
     }
 
-    void GenerateCustomerCounts(int dayMin, int dayMax, int nightMin, int nightMax)
+    void GenerateCustomerCounts(int dayMin, int dayMax, int nightMin, int nightMax) // Generate customer counts based on given min and max values
     {
-        dayCustomers = Random.Range(dayMin, dayMax);
-        nightCustomers = Random.Range(nightMin, nightMax);
+        currentDayCustomers = Random.Range(dayMin, dayMax);
+        currentNightCustomers = Random.Range(nightMin, nightMax);
+    }
+
+    void KeepTime()
+    {
+        currentTime += Time.deltaTime;
+        if (currentTime >= timePerDay * timePerHour)
+        {
+            //insert code here to end day.
+        }
     }
 }
